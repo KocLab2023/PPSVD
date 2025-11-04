@@ -10,18 +10,18 @@ import (
 	"src/eigen/normalize"
 )
 
-// 设置Mat * vec相关参数
+
 func LinearTrans(A [][]float64, Slots int, n int, ctVec *rlwe.Ciphertext, params ckks.Parameters,
 	ecd *ckks.Encoder, eval *ckks.Evaluator, kgen *rlwe.KeyGenerator, rlk *rlwe.RelinearizationKey,
 	sk *rlwe.SecretKey) (lt lintrans.LinearTransformation, ltEval *lintrans.Evaluator) {
 
-	// 创建一个切片存储 n 条对角线
+	
 	diagsA := make([][]float64, n)
 	for k := 0; k < n; k++ {
 		diagsA[k] = make([]float64, n)
 	}
 
-	// 提取对角线
+	
 	for i := 0; i < n; i++ {
 		for k := 0; k < n; k++ {
 			diagsA[k][i] = A[i][(i+k)%n]
@@ -29,7 +29,7 @@ func LinearTrans(A [][]float64, Slots int, n int, ctVec *rlwe.Ciphertext, params
 	}
 
 	//for k := 0; k < n; k++ {
-	//	fmt.Printf("第 %d 条对角线: %v\n", k+1, diagsA[k])
+	//	fmt.Printf("the %d-th diagonal: %v\n", k+1, diagsA[k])
 	//}
 
 	nonZeroDiagonals := make([]int, n)
@@ -75,10 +75,8 @@ func HomomoMatMutiVec(lt lintrans.LinearTransformation, ltEval *lintrans.Evaluat
 
 	var err error
 
-	// 将向量填充到slots中
-	// 注意slots长度为logN-1
 	logNPow := math.Pow(2, float64(LogN-1))
-	// 移动次数要-1
+	
 	logNPown := logNPow/float64(n) - 1
 
 	for i := 0; i < int(logNPown); i++ {
@@ -118,12 +116,12 @@ func HomomoPowerMethod(evalInnsum *ckks.Evaluator, lt lintrans.LinearTransformat
 	fmt.Println()
 	fmt.Println("3. Performing homomorphic power method...")
 
-	// 计算特征向量
+
 	ctNormVec = ctVec
 	//var ctLintransVec *rlwe.Ciphertext
 	for i := 0; i < max_iter; i++ {
 		fmt.Println()
-		fmt.Printf("%2s第%d次迭代...", "", i+1)
+		fmt.Printf("%2sthe %d-th iteration...", "", i+1)
 		fmt.Println()
 		ctLintransVec = HomomoMatMutiVec(lt, ltEval, ctNormVec, eval, n, LogN, ctVec0, rotEval1, rot1)
 		LintransVec := dec.DecryptNew(ctLintransVec)
@@ -171,7 +169,7 @@ func HomomoPowerMethod(evalInnsum *ckks.Evaluator, lt lintrans.LinearTransformat
 		ctNormVec = normalize.NormVect(ctNormVal, ctLintransVec, ctVec0, rotEval, eval, n, rot)
 	}
 
-	// 计算特征值
+	
 	ctLintransNormVec := normalize.MulSumVec(evalInnsum, ctLintransVec, ctNormVec, eval, batch, n)
 
 	ctNormVec2 := normalize.MulSumVec(evalInnsum, ctNormVec, ctNormVec, eval, batch, n)
