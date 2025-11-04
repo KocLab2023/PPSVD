@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-// 求两个向量的外积outer(vecLeft, vecRight)
+
 func HomomoOuterProduct(ptVector *rlwe.Plaintext, ctVec *rlwe.Ciphertext,
 	eval *ckks.Evaluator, n int, evalInnsum *ckks.Evaluator, batch int,
 	params ckks.Parameters, kgen *rlwe.KeyGenerator, rlk *rlwe.RelinearizationKey, sk *rlwe.SecretKey,
@@ -15,12 +15,12 @@ func HomomoOuterProduct(ptVector *rlwe.Plaintext, ctVec *rlwe.Ciphertext,
 
 	mask_vecs := make([][]float64, n)
 	for i := 0; i < n; i++ {
-		mask_vecs[i] = make([]float64, n) // 每个向量的长度为 n
+		mask_vecs[i] = make([]float64, n) 
 	}
 
-	// 按规则修改向量
+	
 	for i := 0; i < n; i++ {
-		mask_vecs[i][i] = 1.0 // 设置第 i 个向量的第 i 个元素为 1
+		mask_vecs[i][i] = 1.0 
 	}
 	for i, vector := range mask_vecs {
 		if err = ecd.Encode(vector, ptVector); err != nil {
@@ -31,7 +31,7 @@ func HomomoOuterProduct(ptVector *rlwe.Plaintext, ctVec *rlwe.Ciphertext,
 			panic(err)
 		}
 
-		// 向右旋转(n - 1) * (i + 1)位
+		
 		rotLeft := -(n - 1) * (i + 1)
 		galElsRotLeft := []uint64{
 			params.GaloisElement(rotLeft)}
@@ -42,7 +42,7 @@ func HomomoOuterProduct(ptVector *rlwe.Plaintext, ctVec *rlwe.Ciphertext,
 			panic(err)
 		}
 
-		// 对旋转后的向量求内和
+		
 		//[1,0,0,0]->[0,0,0,1]->[1,1,1,1]
 		if err := evalInnsum.InnerSum(tempVec, batch, n, tempVec); err != nil {
 			panic(err)
@@ -55,7 +55,7 @@ func HomomoOuterProduct(ptVector *rlwe.Plaintext, ctVec *rlwe.Ciphertext,
 	}
 	ctVecLeft := ctVec0
 
-	// 再处理右边的向量
+	
 
 	rotRight := -n
 	galElsRotRight := []uint64{
@@ -94,7 +94,7 @@ func HomomoEigenShift(ctRowVec *rlwe.Ciphertext, ctEigenVec *rlwe.Ciphertext, ct
 	var err error
 	ctVecOuter := HomomoOuterProduct(ptVector, ctEigenVec, eval, n, evalInnsum, batch, params, kgen, rlk, sk, ctVec0, ctVec00, ecd)
 
-	// 计算ctVecOuter中的每个值与ctEigenVal的乘积
+	
 	// multi & add & rotate
 	nPow := math.Pow(float64(n), 2)
 	for i := 0; i < int(nPow); i++ {
