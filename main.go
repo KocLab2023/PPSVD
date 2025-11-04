@@ -157,35 +157,35 @@ func main() {
 	//	{2.0, 3.0, 4.0, 1.0},
 	//}
 
-	//设置随机种子
+	
 	//r := rand.New(rand.NewSource(50))
 
-	// 矩阵维度
+	
 	//n := 4
 
-	// 创建一个二维切片
+	
 	//A := make([][]float64, n)
 	//for i := 0; i < n; i++ {
-	//	A[i] = make([]float64, n) // 每行初始化长度为 n
+	//	A[i] = make([]float64, n) 
 	//	for j := 0; j < n; j++ {
-	//		randomValue := r.Float64() * 10 // 生成 0 到 99 的随机整数
+	//		randomValue := r.Float64() * 10 
 	//		A[i][j] = float64(int(randomValue + 0.5))
 	//	}
 	//}
 
-	// 输出随机二维数组
-	//fmt.Println("随机生成的二维整型数组:")
+	
+	//fmt.Println()
 	//for _, row := range A {
 	//	fmt.Println(row)
 	//}
 
-	// 获取矩阵的维度 n
+	
 	n := len(A)
 
-	// 创建一个切片用于存储展开后的结果
+	
 	var rowA []float64
 
-	// 按行展开二维数组
+	
 	for _, row := range A {
 		rowA = append(rowA, row...)
 	}
@@ -239,7 +239,7 @@ func main() {
 		panic(err)
 	}
 
-	// 0向量加密
+	
 	//vec0 := make([]float64, Slots)
 	//ptVec0 := ckks.NewPlaintext(params, params.MaxLevel())
 	//if err = ecd.Encode(vec0, ptVec0); err != nil {
@@ -314,7 +314,7 @@ func main() {
 	//	panic(err)
 	//}
 	//
-	//// 执行Eigen shift算法
+	
 	//ctShiftMat := HomomoEigenShift(ctRowA, ctEigenVec, ctEigenVal, rotEval, rot, ptVector, eval, n, evalInnsum, batch, params, kgen, rlk, sk, ctVec0, ctVec00, ctVec000, ecd)
 	//
 	//ptShiftMat := dec.DecryptNew(ctShiftMat)
@@ -329,20 +329,20 @@ func main() {
 	//}
 	//fmt.Printf("...\n")
 	//
-	//// 创建二维数组
+	
 	//shiftMat := make([][]float64, n)
 	//for i := 0; i < n; i++ {
 	//	shiftMat[i] = make([]float64, n)
 	//}
 	//
-	//// 填充二维数组
+	
 	//nPow := math.Pow(float64(n), 2)
 	//for i := 0; i < int(nPow); i++ {
 	//	row := i / n
 	//	col := i % n
 	//	shiftMat[row][col] = shiftMatVec[i]
 	//}
-	//fmt.Println("转换后的二维数组:")
+	//fmt.Println()
 	//for _, row := range shiftMat {
 	//	fmt.Println(row)
 	//}
@@ -353,7 +353,7 @@ func main() {
 	start := time.Now()
 	for i := 0; i < lE; i++ {
 		fmt.Println()
-		fmt.Printf("第%d次循环...", i+1)
+		fmt.Printf("the %d-th iteration...", i+1)
 
 		// Generate random vector
 		r := rand.New(rand.NewSource(int64(i + 5)))
@@ -364,7 +364,7 @@ func main() {
 		vec := arr
 		//vec := []float64{1.0, 0.0, 3.0, 2.0}
 		fmt.Println()
-		fmt.Println("生成的随机向量:", vec)
+		fmt.Println("the generated random vector:", vec)
 
 		ptVec := ckks.NewPlaintext(params, params.MaxLevel())
 		if err = ecd.Encode(vec, ptVec); err != nil {
@@ -375,7 +375,7 @@ func main() {
 			panic(err)
 		}
 
-		// 0向量加密
+		
 		vec0 := make([]float64, Slots)
 		ptVec0 := ckks.NewPlaintext(params, params.MaxLevel())
 		if err = ecd.Encode(vec0, ptVec0); err != nil {
@@ -423,7 +423,7 @@ func main() {
 			shiftMat[i] = make([]float64, n)
 		}
 
-		// 填充二维数组
+		
 		nPow := math.Pow(float64(n), 2)
 		for i := 0; i < int(nPow); i++ {
 			row := i / n
@@ -458,7 +458,7 @@ func main() {
 		}
 		fmt.Printf("...\n")
 
-		// 将所有的特征向量放到数组中
+		
 		singularVec[i] = eigenVecList[:n]
 
 		fmt.Printf("%2sSingularVec: ", "")
@@ -476,7 +476,7 @@ func main() {
 		}
 		fmt.Printf("...\n")
 
-		//将所有的特征值放到向量中
+		
 		singularVal[i] = eigenValList[0]
 		fmt.Printf("%2sSingularVal: ", "")
 		fmt.Println(singularVal)
@@ -485,7 +485,7 @@ func main() {
 	fmt.Println()
 	fmt.Printf("The times of SVD: %v\n", elapsed)
 
-	// 创建CSV文件
+	
 	file, err = os.Create("result/output.csv")
 	if err != nil {
 		panic(err)
@@ -495,16 +495,16 @@ func main() {
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
-	// 写入数据
+	
 	for i := 0; i < lE; i++ {
 		var row []string
 		for j := 0; j < len(singularVec[i]); j++ {
 			row = append(row, strconv.FormatFloat(singularVec[i][j], 'f', 20, 64))
 		}
-		// 加上向量值
+		
 		row = append(row, strconv.FormatFloat(singularVal[i], 'f', 20, 64))
 		writer.Write(row)
 	}
 
-	fmt.Println("CSV 文件生成成功")
+	fmt.Println("The CSV file has been successfully generated!")
 }
