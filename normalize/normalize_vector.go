@@ -35,7 +35,7 @@ func NormVect(ctNormVal *rlwe.Ciphertext, ctVec *rlwe.Ciphertext,
 
 	// Normalize Vector
 
-	// 计算向量中的每个值与NormVal的乘积
+	
 	// multi & add & rotate
 	for i := 0; i < vecLen; i++ {
 		tempVec, err := eval.MulRelinNew(ctVec, ctNormVal)
